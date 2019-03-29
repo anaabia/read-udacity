@@ -6,4 +6,4 @@ To get started developing right away:
 
 * Install and start the API server
     - `npm install`
-    - `npm start run`ss
+    - `npm start run`
