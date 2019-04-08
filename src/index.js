@@ -5,9 +5,20 @@ import App from './App';
 
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { reducers} from './reducers'
+import reducer from './reducers'
+import thunk from 'redux-thunk'
+import { applyMiddleware } from 'redux'
 
-const store = createStore(reducers);
+const logger = (store) => (next) => (action) => {
+    console.group(action.type)
+      console.log('The action: ', action)
+      const returnValue = next(action)
+      console.log('The new state: ', store.getState())
+    console.groupEnd()
+    return returnValue
+  }
+
+const store = createStore(reducer, applyMiddleware(thunk, logger));
 
 ReactDOM.render(
     <Provider store={store}>

@@ -1,5 +1,7 @@
-import PostApi from '../services/post'
+import * as PostApi from '../services/post'
 import { showLoading, hideLoading } from 'react-redux-loading'
+import * as CommentApi from '../services/comment'
+import { addComment } from './comments';
 
 export const RECEIVE_ALL_POST = 'RECEIVE_ALL_POST'
 export const ADD_POST = 'ADD_POST'
@@ -7,16 +9,17 @@ export const UPDATE_POST = 'UPDATE_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const VOTE_POST = 'VOTE_POST'
 
-export const receiveAllPost = () => {
+export const receiveAllPost = (posts) => {
     return {
         type: RECEIVE_ALL_POST,
+        posts
     }
 }
 
-export const addPost = (post) => {
+export const addPost = (posts) => {
     return {
         type: ADD_POST,
-        post
+        posts
     }
 }
 
@@ -52,7 +55,22 @@ export const handleNewPost = (newPost) => {
     }
 }
 
-export const handleAllPosts = (newPost) => {
+export const handlePost = (postId) => {
+    return ( dispatch ) => {
+        dispatch(showLoading())
+
+        return Promise.all([
+            PostApi.getPost(postId),
+            CommentApi.getAllComment(postId)])
+        .then(([post, comments]) => {
+            dispatch(addPost(post))
+            dispatch(addComment(comments))
+        })
+        .then(() => dispatch(hideLoading()))
+    }
+}
+
+export const handleAllPosts = () => {
     return ( dispatch ) => {
         dispatch(showLoading())
 
@@ -87,6 +105,7 @@ export const handleVotePost = (postId, vote) => {
         dispatch(showLoading())
 
         return PostApi.votePost(postId, vote)
+        .then((vote) => console.log(vote))
         .then(() => dispatch(votePost(postId, vote)))
         .then(() => dispatch(hideLoading()))
     }

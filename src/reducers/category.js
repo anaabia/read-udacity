@@ -1,13 +1,12 @@
 import { RECEIVE_ALL_CATEGORY } from '../actions/category'
 
-export default categories = (states = {}, action) => {
-    switch(action.types){
+const categories = (states = [], action) => {
+    switch(action.type){
         case RECEIVE_ALL_CATEGORY:
-        return {
-            ...states,
-            ...action.categories
-        }
+        return  action.categories
         default :
         return states;
     }
 }
+
+export default categories

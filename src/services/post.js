@@ -1,22 +1,20 @@
-const api = "https://reactnd-books-api.udacity.com"
+const api = "http://localhost:3001"
 
 const headers = {
     'Accept': 'application/json',
-    'Authorization': token
+    'Authorization': 'whatever-you-want',
 }
 
 export const getAllPost = () =>
-    fetch(`${api}/post/`, { headers })
+    fetch(`${api}/posts/`, { headers })
         .then(res => res.json())
-        .then(data => console.log(data));
 
 export const getPost = (postId) =>
-    fetch(`${api}/post/${postId}`, { headers })
-        .then(res => res.json())
-        .then(data => console.log(data));
+    fetch(`${api}/posts/${postId}`, { headers })
+        .then(res => {return res.json()});
 
 export const createPost = (newPost) =>
-    fetch(`${api}/post`, {
+    fetch(`${api}/posts`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ newPost })
@@ -24,15 +22,14 @@ export const createPost = (newPost) =>
         .then(data => data)
 
 export const votePost = (postId, votePost) =>
-    fetch(`${api}/post/${postId}`, {
+    fetch(`${api}/posts/${postId}`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ votePost })
-    }).then(res => res.json())
-        .then(data => data)
+    }).then(res => res)
 
 export const updatePost = (post) =>
-    fetch(`${api}/post/${post.id}`, {
+    fetch(`${api}/posts/${post.id}`, {
         method: 'PUT',
         headers,
         body: JSON.stringify({ post })
@@ -40,7 +37,7 @@ export const updatePost = (post) =>
         .then(data => data)
 
 export const deletePost = (postId) =>
-    fetch(`${api}/post/${postId}`, {
+    fetch(`${api}/posts/${postId}`, {
         method: 'DELETE',
         headers,
     }).then(res => res.json())

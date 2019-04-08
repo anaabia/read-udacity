@@ -1,3 +1,4 @@
+import { mapKeys } from 'lodash'
 import {
     RECEIVE_ALL_POST,
     ADD_POST,
@@ -5,42 +6,40 @@ import {
     DELETE_POST,
     VOTE_POST
 } from '../actions/post'
-import { UP_VOTE } from '../constants/util';
+import { UP_VOTE } from '../constants/util'
 
-export default posts = (states = {}, action) => {
-    switch(action.types){
+const posts = (state = {}, action) => {
+    const { posts } =  action;
+    switch(action.type){
         case ADD_POST:
         return {
-            ...states,
-            ...states.posts.concat(action.posts)
+            ...state, [posts.id]: posts
         }
     case RECEIVE_ALL_POST:
-        return {
-            ...states,
-            ...states.posts.concat(action.posts)
-        }
+        return mapKeys(posts, (value, key) => value.id)
     case UPDATE_POST:
         return {
-            ...states,
+            ...state,
             [action.postId]: {
                 ...state[action.postId],
-                ...action.post
+                ...action.posts
             }
         }
     case DELETE_POST:
         return {
-            ...states,
-            ...states.posts.filter(post => post !== action.postId)
+            ...state,
+            ...state.posts.filter(post => post !== action.postId)
         }
     case VOTE_POST:
         return {
-            ...states,
-            [action.postId]:{
-                ...states[action.postId],
-                voteScore: [action.postId].voteScore + (action.vote === UP_VOTE ? 1 : -1)
+            ...state,
+            [action.postId]: {
+                ...state[action.postId],
+                voteScore: action.vote === UP_VOTE ? state[action.postId].voteScore + 1 : state[action.postId].voteScore - 1
             }
         }
-        default :
-        return states;
+    default :
+        return state;
     }
 }
+export default posts

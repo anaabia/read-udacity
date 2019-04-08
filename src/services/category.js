@@ -1,16 +1,14 @@
-const api = "https://reactnd-books-api.udacity.com"
+const api = "http://localhost:3001"
 
 const headers = {
     'Accept': 'application/json',
-    'Authorization': token
+    'Authorization': 'whatever-you-want',
 }
 
 export const getAllCategories = () =>
     fetch(`${api}/categories`, { headers })
         .then(res => res.json())
-        .then(data => console.log(data));
 
 export const getCategory = (categoryId) =>
-    fetch(`${api}/${categoryId}/post`, { headers })
+    fetch(`${api}/${categoryId}/posts`, { headers })
         .then(res => res.json())
-        .then(data => console.log(data));

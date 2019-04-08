@@ -1,15 +1,14 @@
-const api = "https://reactnd-books-api.udacity.com"
+const api = "http://localhost:3001"
 
 const headers = {
     'Accept': 'application/json',
-    'Authorization': token
+    'Authorization': 'whatever-you-want',
 }
 
 export const getAllComment = (postId) =>
     fetch(`${api}/posts/${postId}/comments`, { headers })
-        .then(res => res.json())
-        .then(data => console.log(data));
-
+        .then(res => res.json());
+        
 export const getComment = (commentId) =>
     fetch(`${api}/comment/${commentId}`, { headers })
         .then(res => res.json())
@@ -24,7 +23,7 @@ export const createComment = (newComment) =>
         .then(data => data)
 
 export const voteComment = (commentId, voteComment) =>
-    fetch(`${api}/comment/${commentId}`, {
+    fetch(`${api}/comments/${commentId}`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ voteComment })

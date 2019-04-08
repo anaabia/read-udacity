@@ -1,17 +1,10 @@
-import CommentApi from '../services/comment'
+import * as CommentApi from '../services/comment'
 import { showLoading, hideLoading } from 'react-redux-loading'
 
-export const RECEIVE_ALL_COMMENT = 'RECEIVE_ALL_COMMENT'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const UPDATE_COMMENT = 'UPDATE_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
-
-export const receiveAllComment = () => {
-    return {
-        type: RECEIVE_ALL_COMMENT,
-    }
-}
 
 export const addComment = (comment) => {
     return {
@@ -84,10 +77,8 @@ export const handleVoteComment = (commentId, vote) => {
 
 export const handleCommentsByPost = (postId) => {
     return (dispatch) => {
-        dispatch(showLoading())
 
         return CommentApi.getAllComment(postId)
-        .then((comments) => dispatch(receiveAllComment(comments)))
-        .then(() => dispatch(hideLoading()))
+        .then((comments) => dispatch(addComment(comments)))
     }
 }
