@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { handleAllCategories, handleCategoriesByPost } from '../actions/category';
 import { connect } from 'react-redux';
-import { withRouter } from "react-router-dom";
-import { handleAllPosts, receiveAllPost } from '../actions/post';
+import { withRouter, Link } from "react-router-dom";
 
 const styles = {
   root: {
@@ -35,13 +33,11 @@ class Nav extends Component {
 
   onClick = (e, category) => {
     e.preventDefault()
-    this.props.dispatch(handleCategoriesByPost(category.name))
-    this.props.history.push(`/${category.name}`)
+    this.props.history.push(`/category/${category.name}`)
   }
 
   onClickMainPage = (e) => {
     e.preventDefault()
-    this.props.dispatch(receiveAllPost())
     this.props.history.push(`/`)
   }
 
@@ -51,12 +47,11 @@ class Nav extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
+          <Button onClick={(e) => this.onClickMainPage(e)} key={'new'} color="inherit">Home</Button>
+          <Link className='MuiButtonBase-root-70 MuiButton-root-44 MuiButton-text-46 MuiButton-flat-49 MuiButton-colorInherit-65' to={`/newPost`}  key={'home'} >New Post</Link>
           {categories && categories.length > 0 && categories.map((category) => 
             <Button onClick={(e) => this.onClick(e,category)} key={category.name} color="inherit">{category.name}</Button>
             )}
-            <Typography onClick={(e) => this.onClickMainPage(e)} variant="h6" color="inherit" className={classes.grow}>
-              Blog
-            </Typography>
           </Toolbar>
         </AppBar>
       </div>

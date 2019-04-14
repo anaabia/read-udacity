@@ -2,6 +2,7 @@ const api = "http://localhost:3001"
 
 const headers = {
     'Accept': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': 'whatever-you-want',
 }
 
@@ -17,7 +18,7 @@ export const createPost = (newPost) =>
     fetch(`${api}/posts`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ newPost })
+        body: JSON.stringify({ ...newPost })
     }).then(res => res.json())
         .then(data => data)
 
@@ -25,7 +26,7 @@ export const votePost = (postId, votePost) =>
     fetch(`${api}/posts/${postId}`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ votePost })
+        body: JSON.stringify({ option: votePost })
     }).then(res => res)
 
 export const updatePost = (post) =>

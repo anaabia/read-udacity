@@ -1,10 +1,26 @@
 import * as CommentApi from '../services/comment'
 import { showLoading, hideLoading } from 'react-redux-loading'
+import { addCommentInPost, deleteCommentInPost } from './post';
 
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const UPDATE_COMMENT = 'UPDATE_COMMENT'
+export const DELETE_COMMENT_BY_PARENT = 'DELETE_COMMENT_BY_PARENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
+export const OPEN_DIALOG_COMMENT = 'OPEN_COMMENT'
+export const CLOSE_DIALOG_COMMENT = 'CLOSE_COMMENT'
+
+export const closeDialogComment = () => {
+    return {
+        type: CLOSE_DIALOG_COMMENT
+    }
+}
+
+export const openDialogComment = () => {
+    return {
+        type: OPEN_DIALOG_COMMENT
+    }
+}
 
 export const addComment = (comment) => {
     return {
@@ -17,6 +33,13 @@ export const deleteComment = (commentId) => {
     return {
         type: DELETE_COMMENT,
         commentId
+    }
+}
+
+export const deleteCommentByParent = (parentId) => {
+    return {
+        type: DELETE_COMMENT_BY_PARENT,
+        parentId
     }
 }
 
@@ -35,14 +58,18 @@ export const voteComment = (commentId, vote) => {
     }
 }
 
-export const handleNewComment = (newComment) => {
+export const handleNewComment = (newComment, post) => {
     return ( dispatch ) => {
         dispatch(showLoading())
 
         return CommentApi.createComment(newComment)
-        .then((comment) => dispatch(addComment(comment)))
+        .then((comments) => {
+            dispatch(addComment({...newComment, ...comments}))
+            dispatch(addCommentInPost(post))
+            dispatch(closeDialogComment())
+        })
         .then(() => dispatch(hideLoading()))
-    }
+    }   
 }
 
 export const handleUpdateComment = (comment) => {
@@ -55,12 +82,13 @@ export const handleUpdateComment = (comment) => {
     }
 }
 
-export const handleDeleteComment = (commentId) => {
+export const handleDeleteComment = (comment) => {
     return ( dispatch ) => {
         dispatch(showLoading())
 
-        return CommentApi.deleteComment(commentId)
-        .then(() => dispatch(deleteComment(commentId)))
+        return CommentApi.deleteComment(comment.id)
+        .then(() => dispatch(deleteComment(comment.id)))
+        .then(() => dispatch(deleteCommentInPost(comment.parentId)))
         .then(() => dispatch(hideLoading()))
     }
 }

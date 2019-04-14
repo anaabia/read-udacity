@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Post from "./Post";
 
-class PageView extends Component {
+class Category extends Component {
 
     render(){
         const { posts } = this.props;
@@ -15,10 +15,10 @@ class PageView extends Component {
     }
 }
 
-const mapStateToProps = ({ posts }) => {
+const mapStateToProps = ({ posts }, ownProps) => {
     return {
-      posts: posts ?  Object.values(posts) : []
+      posts: posts ?  Object.values(posts).filter(post => post.category === ownProps.match.params.category) : []
     }
   }
   
-export default connect(mapStateToProps)(PageView)
+export default connect(mapStateToProps)(Category)

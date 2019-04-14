@@ -6,8 +6,16 @@ import LoadingBar from 'react-redux-loading'
 import Nav from './components/Nav';
 import PageView from './components/PageView';
 import Post from './components/Post';
+import NewForm from './components/NewForm';
+import { connect } from 'react-redux';
+import { handleAllPosts } from './actions/post';
+import Category from './components/Category';
 
 class App extends Component {
+
+  componentDidMount(){
+    this.props.dispatch(handleAllPosts())
+  }
 
   render() {
     return (
@@ -17,8 +25,9 @@ class App extends Component {
           <div className="App">
             <Nav />
             <Route path='/' exact component={PageView} />
-            <Route path='/:category' exact component={PageView} />
-            <Route path='/:category/:id' exact component={Post}/>
+            <Route path='/category/:category' exact component={Category} />
+            <Route path='/category/:category/:id' exact component={Post}/>
+            <Route path='/newPost' exact component={NewForm}/>
           </div>
         </Fragment>
       </Router>
@@ -26,4 +35,4 @@ class App extends Component {
   }
 }
 
-export default (App)
+export default connect(null)(App)

@@ -1,13 +1,16 @@
 import * as PostApi from '../services/post'
 import { showLoading, hideLoading } from 'react-redux-loading'
 import * as CommentApi from '../services/comment'
-import { addComment } from './comments';
+import { addComment, deleteCommentByParent } from './comments';
+import { history } from '../App';
 
 export const RECEIVE_ALL_POST = 'RECEIVE_ALL_POST'
 export const ADD_POST = 'ADD_POST'
 export const UPDATE_POST = 'UPDATE_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const VOTE_POST = 'VOTE_POST'
+export const ADD_COMMENT_POST = 'ADD_COMMENT_POST'
+export const DELETE_COMMENT_POST = 'DELETE_COMMENT_POST'
 
 export const receiveAllPost = (posts) => {
     return {
@@ -37,6 +40,20 @@ export const updatePost = (post) => {
     }
 }
 
+export const addCommentInPost = (postId) => {
+    return {
+        type: ADD_COMMENT_POST,
+        postId
+    }
+}
+
+export const deleteCommentInPost = (postId) => {
+    return {
+        type: DELETE_COMMENT_POST,
+        postId
+    }
+}
+
 export const votePost = (postId, vote) => {
     return {
         type: VOTE_POST,
@@ -45,13 +62,14 @@ export const votePost = (postId, vote) => {
     }
 }
 
-export const handleNewPost = (newPost) => {
+export const handleNewPost = (newPost, actioToRedirect) => {
     return ( dispatch ) => {
         dispatch(showLoading())
 
         return PostApi.createPost(newPost)
-        .then((post) => dispatch(addPost(post)))
+        .then((post) => dispatch(addPost({...post, ...newPost})))
         .then(() => dispatch(hideLoading()))
+        .then(() => actioToRedirect(newPost.category, newPost.id))
     }
 }
 
@@ -96,6 +114,7 @@ export const handleDeletePost = (postId) => {
 
         return PostApi.deletePost(postId)
         .then(() => dispatch(deletePost(postId)))
+        .then(()=> dispatch(deleteCommentByParent(postId)))
         .then(() => dispatch(hideLoading()))
     }
 }
@@ -105,7 +124,6 @@ export const handleVotePost = (postId, vote) => {
         dispatch(showLoading())
 
         return PostApi.votePost(postId, vote)
-        .then((vote) => console.log(vote))
         .then(() => dispatch(votePost(postId, vote)))
         .then(() => dispatch(hideLoading()))
     }

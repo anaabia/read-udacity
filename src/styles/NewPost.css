@@ -1,0 +1,7 @@
+div .form{
+    margin: 2% 5%;
+}
+.form > Button{
+    margin-top: 1%;
+    float: right;
+}

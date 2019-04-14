@@ -2,14 +2,30 @@ import {
     ADD_COMMENT,
     UPDATE_COMMENT,
     DELETE_COMMENT,
-    VOTE_COMMENT
+    VOTE_COMMENT,
+    OPEN_DIALOG_COMMENT,
+    CLOSE_DIALOG_COMMENT,
+    DELETE_COMMENT_BY_PARENT
 } from '../actions/comments'
 import { UP_VOTE } from '../constants/util'
 
-const comments = (states = [], action) => {
+const comment = (states = {comments: [], isShowDialog: false }, action) => {
     switch(action.type){
         case ADD_COMMENT:
-            return  [...states.concat(action.comment)]
+            return  {
+                ...states,
+                comments: [...states.comments.concat(action.comment)]
+            }
+        case OPEN_DIALOG_COMMENT:
+            return {
+                ...states,
+                isShowDialog: true
+            }
+        case CLOSE_DIALOG_COMMENT:
+            return {
+                ...states,
+                isShowDialog: false
+            }
         case UPDATE_COMMENT:
             return {
                 ...states,
@@ -21,15 +37,29 @@ const comments = (states = [], action) => {
         case DELETE_COMMENT:
             return {
                 ...states,
-                ...states.comments.filter(comment => comment !== action.commentId)
+                comments: [...states.comments.filter(comment => comment.id !== action.commentId)]
             }
         case VOTE_COMMENT:
-            return [...states.map(comment => comment.id === action.commentId ? handleVote(comment, action.vote) : comment )]
+            return {
+                ...states,
+                ...states.comments.map(comment => comment.id === action.commentId ? handleVote(comment, action.vote) : comment )
+            }
+        case DELETE_COMMENT_BY_PARENT:
+            return {
+                ...states,
+                comments: [...states.comments.map(comment => comment.parentId === action.parentId ? deleteByParent(comment) :  comment)]
+            }
         default :
         return states;
     }
 }
 
+const deleteByParent = (comment) => {
+    return {
+        ...comment,
+        parentDeleted: true
+    }
+}
 const handleVote = (comment, vote) => {
     return {
         ...comment,
@@ -37,4 +67,4 @@ const handleVote = (comment, vote) => {
     }
 }
 
-export default comments
+export default comment

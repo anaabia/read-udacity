@@ -8,13 +8,16 @@ import Typography from '@material-ui/core/Typography';
 import * as FontAwesome from 'react-icons/lib/fa'
 import formatDate from '../helpers/format'
 import '../styles/post.css'
-import { handleVotePost, handlePost } from '../actions/post';
+import { handleVotePost, handlePost, handleDeletePost } from '../actions/post';
 import { UP_VOTE } from '../constants/util';
 import { connect } from 'react-redux';
-import { handleCommentsByPost } from '../actions/comments';
+import { handleCommentsByPost, closeDialogComment, openDialogComment } from '../actions/comments';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom'
 import Comment from './Comment';
+import FormDialog from './FormDialog';
+// FaEdit
+// react-icons/lib/fa/trash-o
 
 const styles = {
     card: {
@@ -45,12 +48,11 @@ class Post extends Component{
       }
 
     componentDidMount(){
-        if(this.props.post && (!this.props.comments || !this.props.comments.find(comment => comment.parentId === this.props.post.id))){
-            this.props.dispatch(handleCommentsByPost(this.props.post.id))
-        }else{
-            if(this.props.match.params.id && !this.props.post){
-                this.props.dispatch(handlePost(this.props.match.params.id))
-            }
+        const isExistComment = this.props.post && this.props.comment ? 
+            this.props.comment.comments.find(c => c.parentId === this.props.post.id)
+            : this.props.comment.comments.find(c => c.parentId === this.props.match.params.id)
+        if(!isExistComment) {
+            this.props.dispatch(handleCommentsByPost(this.props.post ? this.props.post.id:this.props.match.params.id))
         }
     }
 
@@ -61,32 +63,51 @@ class Post extends Component{
     }
 
     onClickReadMore = (e) => {
-            e.preventDefault()
-            this.props.history.push(`/${this.props.post.id}`)
+        e.preventDefault()
+        this.props.history.push(`/category/${this.props.post.category}/${this.props.post.id}`)
     }
     
+    onClickCloseDialog = () => {
+        this.props.dispatch(closeDialogComment())
+    }
+
+    onClickOpenDialog = () => {
+        this.props.dispatch(openDialogComment())
+    }
+
+    onClickDeletePost = (e) => {
+        e.preventDefault()
+        this.props.dispatch(handleDeletePost(this.props.post.id))
+    }
+
     render() {
-    const { post, comments, classes } = this.props;
+    const { post, comment: { comments }, classes } = this.props;
     const date = post && formatDate(post.timestamp) 
     const isShowComments = Boolean(this.props.match.params.id)
-    const commentsByPost = comments && comments.filter(comment => comment.parentId === post.id)
+    const commentsByPost = comments && post && comments.filter(comment => comment.parentId === post.id)
     return (
         <div>
             { post ?
             <Card className={classes.card}>
-            <Link to={`/${post.category}/${post.id}`}>
+            <Link to={`/category/${post.category}/${post.id}`}>
                 <CardContent>
                     <Typography variant="h5" component="h2">
-                        {post.title}
+                        {post.title} 
+                        <button onClick={this.onClickDeletePost} className='icon-button'>
+                            <FontAwesome.FaTrashO className='post-icon'/> 
+                        </button>
+                        <button className='icon-button'>
+                            <FontAwesome.FaEdit className='post-icon'/> 
+                        </button>
                     </Typography>
                     <Typography  color="textSecondary">
                         {post.author}  {date}
                     </Typography>
                     <Typography className={classes.postIcons} variant="h5" component="h5">
                         <button className='icon-button'>
-                            <FontAwesome.FaComment className='post-icon'/> { }
+                            <FontAwesome.FaComment className='post-icon'/> 
                         </button>
-                        <span>{commentsByPost && commentsByPost.length > 0 && commentsByPost.length}</span>  {   }
+                        <span>{post.commentCount > 0 && post.commentCount}</span>  
                         <button className='icon-button' onClick={(e) => this.onClickVote(e)}>
                             <FontAwesome.FaHeart className='post-icon'/>
                         </button>
@@ -97,6 +118,7 @@ class Post extends Component{
                     </Typography>
                     {isShowComments && <Typography variant="h5" component="h4">
                         Comments
+                        <Button onClick={this.onClickOpenDialog} size="small">New Comment</Button>
                     </Typography>}
                     {isShowComments && commentsByPost && commentsByPost.length > 0  && (
                         commentsByPost.map((comment) =>
@@ -108,16 +130,17 @@ class Post extends Component{
             {!isShowComments && <CardActions>
                 <Button onClick={this.onClickReadMore} size="small">Learn More</Button>
             </CardActions>}
+            <FormDialog post={post} handleClose={this.onClickCloseDialog} open={this.props.comment.isShowDialog} />
             </Card> :  null}
         </div>
     );
 };
 }
 
-const mapStatesToProps = ({posts, comments}, ownProps) => {
+const mapStatesToProps = ({posts, comment}, ownProps) => {
     return {
         posts,
-        comments,
+        comment,
         post: ownProps.match.params.id ?  posts[ownProps.match.params.id]  :  ownProps.post
     }
 }
