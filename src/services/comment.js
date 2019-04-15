@@ -30,10 +30,10 @@ export const voteComment = (commentId, voteComment) =>
         .then(data => data)
 
 export const updateComment = (commentId, comment) =>
-    fetch(`${api}/comment/${commentId}`, {
+    fetch(`${api}/comments/${commentId}`, {
         method: 'PUT',
         headers,
-        body: JSON.stringify({ comment })
+        body: JSON.stringify({ ...comment })
     }).then(res => res.json())
         .then(data => data)
 

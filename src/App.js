@@ -28,6 +28,7 @@ class App extends Component {
             <Route path='/category/:category' exact component={Category} />
             <Route path='/category/:category/:id' exact component={Post}/>
             <Route path='/newPost' exact component={NewForm}/>
+            <Route path='/newPost/:id' exact component={NewForm}/>
           </div>
         </Fragment>
       </Router>

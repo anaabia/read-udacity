@@ -21,3 +21,17 @@ export const convertToNewPost = (state) => {
         commentCount: 0
     }
 }
+
+export const convertToUpdateComment = (state) => {
+    return {
+        body: state.body,
+        timestamp: new Date().getTime()
+    }
+}
+
+export const convertToUpdatePost = (state) => {
+    return {
+        title: state.title,
+        body: state.body
+    }
+}

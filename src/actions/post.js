@@ -98,13 +98,16 @@ export const handleAllPosts = () => {
     }
 }
 
-export const handleUpdatePost = (post) => {
+export const handleUpdatePost = (post, postId, actionToRedirect) => {
     return ( dispatch ) => {
         dispatch(showLoading())
 
-        return PostApi.updatePost(post)
-        .then((editPost) => dispatch(updatePost(editPost)))
-        .then(() => dispatch(hideLoading()))
+        return PostApi.updatePost(post, postId)
+        .then((editPost) => {
+            dispatch(updatePost(editPost))
+            actionToRedirect(editPost.category, editPost.id)
+            dispatch(hideLoading())
+        })
     }
 }
 

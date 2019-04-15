@@ -29,11 +29,11 @@ export const votePost = (postId, votePost) =>
         body: JSON.stringify({ option: votePost })
     }).then(res => res)
 
-export const updatePost = (post) =>
-    fetch(`${api}/posts/${post.id}`, {
+export const updatePost = (post, postId) =>
+    fetch(`${api}/posts/${postId}`, {
         method: 'PUT',
         headers,
-        body: JSON.stringify({ post })
+        body: JSON.stringify({ ...post })
     }).then(res => res.json())
         .then(data => data)
 

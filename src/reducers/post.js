@@ -43,9 +43,9 @@ const posts = (state = {}, action) => {
         case ADD_COMMENT_POST:
             return {
                 ...state,
-                [action.post.id]: {
-                    ...state[action.post.id],
-                    commentCount: state[action.post.id].commentCount + 1
+                [action.postId]: {
+                    ...state[action.postId],
+                    commentCount: state[action.postId].commentCount + 1
                 }
             }
         case DELETE_COMMENT_POST:

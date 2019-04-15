@@ -43,7 +43,7 @@ const Comment = (props) => {
                     <button onClick={(e) => props.deleteComment(e, comment)} className='icon-button'>
                         <FontAwesome.FaTrashO className='post-icon' />
                     </button>
-                    <button className='icon-button'>
+                    <button onClick={(e) => props.onClickEditComment(e, comment.id)} className='icon-button'>
                         <FontAwesome.FaEdit className='post-icon' />
                     </button>
                 </Typography>

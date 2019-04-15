@@ -64,21 +64,24 @@ export const handleNewComment = (newComment, post) => {
 
         return CommentApi.createComment(newComment)
         .then((comments) => {
-            dispatch(addComment({...newComment, ...comments}))
-            dispatch(addCommentInPost(post))
+            dispatch(addComment(comments))
+            dispatch(addCommentInPost(post.id))
             dispatch(closeDialogComment())
+            dispatch(hideLoading())
         })
-        .then(() => dispatch(hideLoading()))
     }   
 }
 
-export const handleUpdateComment = (comment) => {
+export const handleUpdateComment = (comment, commentId) => {
     return ( dispatch ) => {
         dispatch(showLoading())
 
-        return CommentApi.updateComment(comment)
-        .then((editComment) => dispatch(updateComment(editComment)))
-        .then(() => dispatch(hideLoading()))
+        return CommentApi.updateComment(commentId, comment)
+        .then((editComment) => {
+            dispatch(updateComment(editComment))
+            dispatch(closeDialogComment())
+            dispatch(hideLoading())
+        })
     }
 }
 
@@ -87,9 +90,11 @@ export const handleDeleteComment = (comment) => {
         dispatch(showLoading())
 
         return CommentApi.deleteComment(comment.id)
-        .then(() => dispatch(deleteComment(comment.id)))
-        .then(() => dispatch(deleteCommentInPost(comment.parentId)))
-        .then(() => dispatch(hideLoading()))
+        .then(() => {
+            dispatch(deleteComment(comment.id))
+            dispatch(deleteCommentInPost(comment.parentId))
+            dispatch(hideLoading())
+        })
     }
 }
 
@@ -98,8 +103,10 @@ export const handleVoteComment = (commentId, vote) => {
         dispatch(showLoading())
 
         return CommentApi.voteComment(commentId, vote)
-        .then(() => dispatch(voteComment(commentId, vote)))
-        .then(() => dispatch(hideLoading()))
+        .then(() => {
+            dispatch(voteComment(commentId, vote))
+            dispatch(hideLoading())
+        })
     }
 }
 

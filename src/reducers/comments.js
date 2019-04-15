@@ -29,10 +29,7 @@ const comment = (states = {comments: [], isShowDialog: false }, action) => {
         case UPDATE_COMMENT:
             return {
                 ...states,
-                [action.commentId]: {
-                    ...states[action.commentId],
-                    ...action.comment
-                }
+                comments: [...updateComment(states.comments, action)]
             }
         case DELETE_COMMENT:
             return {
@@ -42,7 +39,7 @@ const comment = (states = {comments: [], isShowDialog: false }, action) => {
         case VOTE_COMMENT:
             return {
                 ...states,
-                ...states.comments.map(comment => comment.id === action.commentId ? handleVote(comment, action.vote) : comment )
+                comments: [...states.comments.map(comment => comment.id === action.commentId ? handleVote(comment, action.vote) : comment )]
             }
         case DELETE_COMMENT_BY_PARENT:
             return {
@@ -52,6 +49,13 @@ const comment = (states = {comments: [], isShowDialog: false }, action) => {
         default :
         return states;
     }
+}
+
+const updateComment = (comments, action) => {
+    const coment = comments.filter(comment => comment.id !== action.comment.id)
+    return [
+        ...coment.concat(action.comment),
+    ]
 }
 
 const deleteByParent = (comment) => {

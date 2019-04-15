@@ -16,8 +16,6 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom'
 import Comment from './Comment';
 import FormDialog from './FormDialog';
-// FaEdit
-// react-icons/lib/fa/trash-o
 
 const styles = {
     card: {
@@ -47,6 +45,10 @@ class Post extends Component{
         classes: PropTypes.object.isRequired,
       }
 
+      state = {
+        commentId: 0,
+      }
+
     componentDidMount(){
         const isExistComment = this.props.post && this.props.comment ? 
             this.props.comment.comments.find(c => c.parentId === this.props.post.id)
@@ -72,12 +74,28 @@ class Post extends Component{
     }
 
     onClickOpenDialog = () => {
+        this.setState({
+            commentId: 0
+        })
         this.props.dispatch(openDialogComment())
     }
 
     onClickDeletePost = (e) => {
         e.preventDefault()
         this.props.dispatch(handleDeletePost(this.props.post.id))
+    }
+
+    onClickEditPost = (e) => {
+        e.preventDefault()
+        this.props.history.push(`/newPost/${this.props.post.id}`)
+    }
+
+    onClickEditComment =  (e, commentId) => {
+        e.preventDefault()
+        this.setState({
+            commentId
+        })
+        this.props.dispatch(openDialogComment())
     }
 
     render() {
@@ -96,7 +114,7 @@ class Post extends Component{
                         <button onClick={this.onClickDeletePost} className='icon-button'>
                             <FontAwesome.FaTrashO className='post-icon'/> 
                         </button>
-                        <button className='icon-button'>
+                        <button onClick={this.onClickEditPost} className='icon-button'>
                             <FontAwesome.FaEdit className='post-icon'/> 
                         </button>
                     </Typography>
@@ -123,14 +141,14 @@ class Post extends Component{
                     {isShowComments && commentsByPost && commentsByPost.length > 0  && (
                         commentsByPost.map((comment) =>
                             comment ? 
-                            <Comment key={comment.id} comment={comment} /> : null)
+                            <Comment onClickEditComment={this.onClickEditComment} key={comment.id} comment={comment} /> : null)
                     )}
                 </CardContent>
             </Link>
             {!isShowComments && <CardActions>
                 <Button onClick={this.onClickReadMore} size="small">Learn More</Button>
             </CardActions>}
-            <FormDialog post={post} handleClose={this.onClickCloseDialog} open={this.props.comment.isShowDialog} />
+            <FormDialog commentId={this.state.commentId} post={post} handleClose={this.onClickCloseDialog} open={this.props.comment.isShowDialog} />
             </Card> :  null}
         </div>
     );
