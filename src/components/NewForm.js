@@ -6,7 +6,6 @@ import '../styles/NewPost.css';
 import { handleNewComment, handleUpdateComment } from '../actions/comments';
 import { convertToNewComment, convertToNewPost, convertToUpdateComment, convertToUpdatePost } from '../helpers/mapping';
 import { handleNewPost, handleUpdatePost } from '../actions/post';
-import { FaComments } from 'react-icons/lib/fa';
 
 class NewForm extends Component {
 

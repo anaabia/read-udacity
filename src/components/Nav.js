@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { handleAllCategories } from '../actions/category';
 import { connect } from 'react-redux';
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const styles = {
   root: {

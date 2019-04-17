@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import * as FontAwesome from 'react-icons/lib/fa'
 import { formatDate } from '../helpers/format'
@@ -11,10 +9,9 @@ import '../styles/post.css'
 import { handleVotePost, handleDeletePost } from '../actions/post';
 import { UP_VOTE, DOWN_VOTE } from '../constants/util';
 import { connect } from 'react-redux';
-import { handleCommentsByPost, closeDialogComment, openDialogComment } from '../actions/comments';
+import { handleCommentsByPost, openDialogComment } from '../actions/comments';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom'
-import Comment from './Comment';
 import FormDialog from './FormDialog';
 import ActionsEdit from './ActionsEdit';
 import VoteScore from './VoteScore';

@@ -2,7 +2,6 @@ import * as PostApi from '../services/post'
 import { showLoading, hideLoading } from 'react-redux-loading'
 import * as CommentApi from '../services/comment'
 import { addComment, deleteCommentByParent } from './comments';
-import { history } from '../App';
 import { ORDER_BY } from '../helpers/format';
 
 export const RECEIVE_ALL_POST = 'RECEIVE_ALL_POST'

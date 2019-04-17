@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Post from "./Post";
-import { Typography, TextField, MenuItem } from '@material-ui/core';
+import { TextField, MenuItem } from '@material-ui/core';
 import { ORDER_BY } from '../helpers/format';
 import { sortPost } from '../actions/post';
 
