@@ -6,7 +6,8 @@ import {
     DELETE_POST,
     VOTE_POST,
     ADD_COMMENT_POST,
-    DELETE_COMMENT_POST
+    DELETE_COMMENT_POST,
+    SORT_POST
 } from '../actions/post'
 import { UP_VOTE } from '../constants/util'
 
@@ -56,7 +57,8 @@ const posts = (state = {}, action) => {
                     commentCount: state[action.postId].commentCount - 1
                 }
             }
-
+        case SORT_POST:
+            return mapKeys(Object.values(state).sort((p1, p2) => p2[action.value] - p1[action.value]), (value, key) => value.id)
         default:
             return state;
     }
@@ -66,4 +68,5 @@ const deletePost = (posts, id) => {
     delete posts[id]
     return posts
 }
+
 export default posts

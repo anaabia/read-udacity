@@ -57,17 +57,15 @@ class NewForm extends Component {
     save = (e) => {
         e.preventDefault()
         if(this.state.isEditForm){
-            if(this.props.isComment){
-                this.props.dispatch(handleUpdateComment(convertToUpdateComment(this.state), this.props.commentId))
-               } else {
-                this.props.dispatch(handleUpdatePost(convertToUpdatePost(this.state), this.props.match.params.id, this.actionToRedirect))
-               }
+            this.props.dispatch(
+                this.props.isComment 
+                ? handleUpdateComment(convertToUpdateComment(this.state), this.props.commentId)
+                : handleUpdatePost(convertToUpdatePost(this.state), this.props.match.params.id, this.actionToRedirect))
         }else {
-            if(this.props.isComment){
-             this.props.dispatch(handleNewComment(convertToNewComment(this.state, this.props.post.id), this.props.post))
-            } else {
-             this.props.dispatch(handleNewPost(convertToNewPost(this.state), this.actionToRedirect))
-            }
+             this.props.dispatch(
+                this.props.isComment 
+                ? handleNewComment(convertToNewComment(this.state, this.props.post.id), this.props.post)
+                : handleNewPost(convertToNewPost(this.state), this.actionToRedirect))
         }
     }
 
@@ -144,7 +142,6 @@ const mapStateToProps = ({ categories, posts, comment: {comments}}, ownProps) =>
         categories,
         posts,
         comments,
-        // isComment: ownProps.commentId && ownProps.commentId >= 0
     }
 }
 

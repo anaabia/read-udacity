@@ -3,6 +3,7 @@ import { showLoading, hideLoading } from 'react-redux-loading'
 import * as CommentApi from '../services/comment'
 import { addComment, deleteCommentByParent } from './comments';
 import { history } from '../App';
+import { ORDER_BY } from '../helpers/format';
 
 export const RECEIVE_ALL_POST = 'RECEIVE_ALL_POST'
 export const ADD_POST = 'ADD_POST'
@@ -11,11 +12,18 @@ export const DELETE_POST = 'DELETE_POST'
 export const VOTE_POST = 'VOTE_POST'
 export const ADD_COMMENT_POST = 'ADD_COMMENT_POST'
 export const DELETE_COMMENT_POST = 'DELETE_COMMENT_POST'
+export const SORT_POST = 'SORT_POST'
 
 export const receiveAllPost = (posts) => {
     return {
         type: RECEIVE_ALL_POST,
         posts
+    }
+}
+export const sortPost = (value) => {
+    return {
+        type: SORT_POST,
+        value
     }
 }
 
@@ -93,7 +101,10 @@ export const handleAllPosts = () => {
         dispatch(showLoading())
 
         return PostApi.getAllPost()
-        .then((posts) => dispatch(receiveAllPost(posts)))
+        .then((posts) => {
+            dispatch(receiveAllPost(posts))
+            dispatch(sortPost(ORDER_BY.date))
+        })
         .then(() => dispatch(hideLoading()))
     }
 }

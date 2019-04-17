@@ -5,3 +5,12 @@ div .form{
     margin-top: 1%;
     float: right;
 }
+
+.filter{
+    position: absolute;
+    margin-left: 10%;
+}
+
+Post{
+    margin-top: 2%;
+}

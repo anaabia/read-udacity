@@ -3,12 +3,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import * as FontAwesome from 'react-icons/lib/fa'
 import '../styles/post.css'
 import { connect } from 'react-redux';
-import formatDate from '../helpers/format';
-import { UP_VOTE } from '../constants/util';
+import { formatDate } from '../helpers/format';
+import { UP_VOTE, DOWN_VOTE } from '../constants/util';
 import { handleVoteComment, handleDeleteComment } from '../actions/comments';
+import ActionsEdit from './ActionsEdit';
+import VoteScore from './VoteScore';
 
 const styles = {
     card: {
@@ -40,18 +41,14 @@ const Comment = (props) => {
             {comment && (<CardContent>
                 <Typography color="textSecondary">
                     {comment.author}  {date}
-                    <button onClick={(e) => props.deleteComment(e, comment)} className='icon-button'>
-                        <FontAwesome.FaTrashO className='post-icon' />
-                    </button>
-                    <button onClick={(e) => props.onClickEditComment(e, comment.id)} className='icon-button'>
-                        <FontAwesome.FaEdit className='post-icon' />
-                    </button>
+                    <ActionsEdit onClickDelete={(e) => props.deleteComment(e, comment)} onClickEdit={(e) => props.onClickEditComment(e, comment.id)} />
                 </Typography>
                 <Typography className={classes.postIcons} variant="h5" component="h5">
-                    <button className='icon-button' onClick={(e) => props.onClickVote(e, comment.id)}>
-                        <FontAwesome.FaHeart className='post-icon' />
-                    </button>
-                    <span className='icon-info'>{comment && comment.voteScore !== 0 && comment.voteScore}</span>
+                    <VoteScore 
+                        onClickVoteUp={(e) => props.onClickVote(e, comment.id, UP_VOTE)}
+                        onClickVoteDown={(e) => props.onClickVote(e, comment.id, DOWN_VOTE)}
+                        object={comment}
+                    />
                 </Typography>
                 <Typography component="p">
                     {comment.body}
@@ -63,9 +60,9 @@ const Comment = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClickVote: (e, commentId) => {
+        onClickVote: (e, commentId, vote) => {
             e.preventDefault()
-            dispatch(handleVoteComment(commentId, UP_VOTE))
+            dispatch(handleVoteComment(commentId, vote))
         },
         deleteComment: (e, comment) => {
             e.preventDefault()

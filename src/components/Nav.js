@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import { handleAllCategories, handleCategoriesByPost } from '../actions/category';
+import { handleAllCategories } from '../actions/category';
 import { connect } from 'react-redux';
 import { withRouter, Link } from "react-router-dom";
 
@@ -36,9 +36,9 @@ class Nav extends Component {
     this.props.history.push(`/category/${category.name}`)
   }
 
-  onClickMainPage = (e) => {
+  onClickNav = (e, path) => {
     e.preventDefault()
-    this.props.history.push(`/`)
+    this.props.history.push(path)
   }
 
   render (){
@@ -47,8 +47,8 @@ class Nav extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-          <Button onClick={(e) => this.onClickMainPage(e)} key={'new'} color="inherit">Home</Button>
-          <Link className='MuiButtonBase-root-70 MuiButton-root-44 MuiButton-text-46 MuiButton-flat-49 MuiButton-colorInherit-65' to={`/newPost`}  key={'home'} >New Post</Link>
+          <Button onClick={(e) => this.onClickNav(e, '/')} key='new' color="inherit">Home</Button>
+          <Button onClick={(e) => this.onClickNav(e, '/newPost')} key='new' color="inherit">New Post</Button>
           {categories && categories.length > 0 && categories.map((category) => 
             <Button onClick={(e) => this.onClick(e,category)} key={category.name} color="inherit">{category.name}</Button>
             )}

@@ -9,7 +9,6 @@ import Post from './components/Post';
 import NewForm from './components/NewForm';
 import { connect } from 'react-redux';
 import { handleAllPosts } from './actions/post';
-import Category from './components/Category';
 
 class App extends Component {
 
@@ -25,7 +24,7 @@ class App extends Component {
           <div className="App">
             <Nav />
             <Route path='/' exact component={PageView} />
-            <Route path='/category/:category' exact component={Category} />
+            <Route path='/category/:category' exact component={PageView} />
             <Route path='/category/:category/:id' exact component={Post}/>
             <Route path='/newPost' exact component={NewForm}/>
             <Route path='/newPost/:id' exact component={NewForm}/>
