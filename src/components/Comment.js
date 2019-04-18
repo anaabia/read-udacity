@@ -41,10 +41,10 @@ const Comment = (props) => {
             {comment && (<CardContent>
                 <Typography color="textSecondary">
                     {comment.author}  {date}
-                    <ActionsEdit onClickDelete={(e) => props.deleteComment(e, comment)} onClickEdit={(e) => props.onClickEditComment(e, comment.id)} />
+                    <ActionsEdit id={`comment-${props.index}`} onClickDelete={(e) => props.deleteComment(e, comment)} onClickEdit={(e) => props.onClickEditComment(e, comment.id)} />
                 </Typography>
                 <Typography className={classes.postIcons} variant="h5" component="h5">
-                    <VoteScore 
+                    <VoteScore id={`comment-${props.index}`}
                         onClickVoteUp={(e) => props.onClickVote(e, comment.id, UP_VOTE)}
                         onClickVoteDown={(e) => props.onClickVote(e, comment.id, DOWN_VOTE)}
                         object={comment}

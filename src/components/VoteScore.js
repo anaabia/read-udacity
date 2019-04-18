@@ -6,11 +6,11 @@ const VoteScore = props => {
     const { object } = props
     return (
         <div className='vote-score'>
-            <button className='icon-button' onClick={props.onClickVoteUp}>
+            <button id={`vote-up-${props.id}`} className='icon-button' onClick={props.onClickVoteUp}>
                 <FontAwesome.FaThumbsOUp className='post-icon' />
             </button>
-            {object && object.voteScore !== 0 && <span className='icon-info'>{object.voteScore}</span>}
-            <button className='icon-button' onClick={props.onClickVoteDown}>
+            {object && object.voteScore !== 0 && <span id={`vote-info-${props.id}`} className='icon-info'>{object.voteScore}</span>}
+            <button id={`vote-down-${props.id}`} className='icon-button' onClick={props.onClickVoteDown}>
                 <FontAwesome.FaThumbsODown className='post-icon' />
             </button>
         </div>

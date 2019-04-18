@@ -9,7 +9,7 @@ import '../styles/post.css'
 import { handleVotePost, handleDeletePost } from '../actions/post';
 import { UP_VOTE, DOWN_VOTE } from '../constants/util';
 import { connect } from 'react-redux';
-import { handleCommentsByPost, openDialogComment } from '../actions/comments';
+import { handleCommentsByPost, openDialogComment, closeDialogComment } from '../actions/comments';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom'
 import FormDialog from './FormDialog';
@@ -74,6 +74,10 @@ class Post extends Component {
         this.props.dispatch(openDialogComment())
     }
 
+    onClickCloseDialog = () => {
+        this.props.dispatch(closeDialogComment())
+    }
+
     onClickDeletePost = (e) => {
         e.preventDefault()
         this.props.dispatch(handleDeletePost(this.props.post.id))
@@ -101,22 +105,22 @@ class Post extends Component {
         return (
             <div>
                 {post ?
-                    <Card className={classes.card}>
+                    <Card  className={classes.card}>
                         <Link to={`/category/${post.category}/${post.id}`}>
                             <CardContent>
                                 <Typography variant="h5" component="h2" className={classes.postIcons}>
-                                    <h2>{post.title}</h2>
+                                    <h2 id='post-title'>{post.title}</h2>
                                     <button className='icon-button'>
                                         <FontAwesome.FaComment className='post-icon' />
                                     </button>
                                     <span>{post.commentCount > 0 && post.commentCount}</span>
-                                    <VoteScore
+                                    <VoteScore id='post'
                                         onClickVoteUp={(e) => this.onClickVote(e, UP_VOTE)}
                                         onClickVoteDown={(e) => this.onClickVote(e, DOWN_VOTE)}
                                         object={post}
                                     />
                                     {isShowComments && (
-                                        <ActionsEdit onClickDelete={this.onClickDeletePost} onClickEdit={this.onClickEditPost} />
+                                        <ActionsEdit  id='post' onClickDelete={this.onClickDeletePost} onClickEdit={this.onClickEditPost} />
                                         )
                                     }
                                 </Typography>
@@ -124,7 +128,7 @@ class Post extends Component {
                                     {post.author}  {date}
                                 </Typography>
                                 <hr width="100px" color="lavender"></hr>
-                                <Typography component="p">
+                                <Typography id='post-body' component="p">
                                     {post.body}
                                 </Typography>
                                     {isShowComments &&

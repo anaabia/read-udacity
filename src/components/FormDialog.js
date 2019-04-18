@@ -13,7 +13,7 @@ const FormDialog = (props) => {
           aria-labelledby="form-dialog-title"
         >
           <DialogContent>
-            <NewForm post={props.post} commentId={props.commentId} />
+            <NewForm post={props.post} commentId={props.commentId} isComment />
         </DialogContent>
         </Dialog>
       </div>

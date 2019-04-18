@@ -9,12 +9,12 @@ const ListComments = ({onClickOpenDialog, commentsByPost}) => {
                 <Typography variant="h5" component="h4">
                     Comments
                 </Typography>
-                <Button onClick={onClickOpenDialog} size="small">New Comment</Button>
+                <Button onClick={onClickOpenDialog} id='new-comment' size="small">New Comment</Button>
             </div>
             {commentsByPost && commentsByPost.length > 0 && (
-                commentsByPost.map((comment) =>
+                commentsByPost.map((comment, index) =>
                     comment ?
-                        <Comment onClickEditComment={onClickOpenDialog} key={comment.id} comment={comment} /> 
+                        <Comment index={index} onClickEditComment={onClickOpenDialog} key={comment.id} comment={comment} /> 
                         : null
                 )
             )}

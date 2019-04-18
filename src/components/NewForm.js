@@ -92,7 +92,7 @@ class NewForm extends Component {
                     fullWidth
                     required
                     value={this.state.title}
-                    id="standard-name"
+                    id="standard-title"
                     label="Title"
                     margin="normal"
                     onChange={this.handleChange('title')}
@@ -101,7 +101,7 @@ class NewForm extends Component {
                 {!isComment && <TextField
                     fullWidth
                     required
-                    id="standard-select-currency"
+                    id="standard-category"
                     select
                     disabled={isEditForm}
                     value={this.state.category}
@@ -119,7 +119,8 @@ class NewForm extends Component {
                 </TextField>}
                 <TextField
                     multiline={true}
-                    rows={isComment ? 5 :35}
+                    id="standard-body"
+                    rows={isComment ? 5 :25}
                     required
                     label='Body'
                     onChange={this.handleChange('body')}
@@ -127,7 +128,7 @@ class NewForm extends Component {
                     variant="outlined"
                     fullWidth
                 />
-                 <Button disabled={!this.state.isValid} onClick={this.save} variant="contained" color="primary" >
+                 <Button id='form-save' disabled={!this.state.isValid} onClick={this.save} variant="contained" color="primary" >
                     Send
                 </Button>
                 </form>
