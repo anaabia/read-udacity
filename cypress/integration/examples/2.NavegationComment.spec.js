@@ -16,6 +16,7 @@ context('Navigation order', () => {
     cy.get('#outlined-name').type('comment')
     cy.get('#standard-body').type('content comment')
     cy.get('#form-save').click()
+    cy.wait(1000)
 
     cy.get('#action-edit-comment-0 > .post-icon').click()
     cy.wait(100)

@@ -9,18 +9,30 @@ context('Navigation category', () => {
     cy.wait(1000)
 
     cy.get(':nth-child(2) > .MuiButton-label-45').click()
-    cy.url().should('contains', '/');
     cy.wait(1000)
+    cy.url().should('contains', '/');
 
     cy.get('#outlined-name').type('Cypress')
     cy.get('#standard-title').type('Udacity cypress')
     cy.get('.MuiSelect-select-139').click()
+    cy.wait(1000)
+
     cy.get('[data-value="udacity"]').click()
+    cy.wait(1000)
+
     cy.get('#standard-body').type('Teste input Udacity')
     cy.wait
     cy.get('#form-save').click()
+    cy.wait(1000)
+
     cy.url().should('contains', '/udacity');
     cy.wait(1000)
+
+    cy.get('#new-comment > .MuiButton-label-45').click()
+    cy.wait(100)
+    cy.get('#outlined-name').type('comment udacity')
+    cy.get('#standard-body').type('content comment udacity')
+    cy.get('#form-save').click()
 
   })
 
@@ -28,19 +40,29 @@ context('Navigation category', () => {
     cy.wait(1000)
 
     cy.get(':nth-child(2) > .MuiButton-label-45').click()
-    cy.url().should('contains', '/');
     cy.wait(1000)
+    cy.url().should('contains', '/');
 
     cy.get('#outlined-name').type('Cypress')
     cy.get('#standard-title').type('React cypress')
     cy.get('.MuiSelect-select-139').click()
+    cy.wait(1000)
+
     cy.get('[data-value="react"]').click()
+    cy.wait(1000)
+
     cy.get('#standard-body').type('Teste input react')
     cy.wait
     cy.get('#form-save').click()
+    cy.wait(1000)
+
     cy.url().should('contains', '/react');
 
-    cy.wait(1000)
+    cy.get('#new-comment > .MuiButton-label-45').click()
+    cy.wait(100)
+    cy.get('#outlined-name').type('comment react')
+    cy.get('#standard-body').type('content comment react')
+    cy.get('#form-save').click()
 
   })
 
@@ -61,6 +83,12 @@ context('Navigation category', () => {
     cy.url().should('contains', '/redux');
 
     cy.wait(1000)
+
+    cy.get('#new-comment > .MuiButton-label-45').click()
+    cy.wait(100)
+    cy.get('#outlined-name').type('comment redux')
+    cy.get('#standard-body').type('content comment redux')
+    cy.get('#form-save').click()
 
   })
 

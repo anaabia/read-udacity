@@ -11,6 +11,8 @@ context('Navigation post', () => {
     cy.get('a > .MuiCardContent-root-204').first().click({force: true})
     cy.wait(1000)
     cy.get('#action-edit-post').click()
+    cy.wait(1000)
+
     cy.get('#standard-title').type('!!')
     cy.get('#standard-body').type(' ... ')
 
