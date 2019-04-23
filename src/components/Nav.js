@@ -33,7 +33,7 @@ class Nav extends Component {
 
   onClick = (e, category) => {
     e.preventDefault()
-    this.props.history.push(`/category/${category.name}`)
+    this.props.history.push(`/${category.name}`)
   }
 
   onClickNav = (e, path) => {
@@ -47,7 +47,7 @@ class Nav extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-          <Button onClick={(e) => this.onClickNav(e, '/')} key='new' color="inherit">Home</Button>
+          <Button onClick={(e) => this.onClickNav(e, '/')} key='home' color="inherit">Home</Button>
           <Button onClick={(e) => this.onClickNav(e, '/newPost')} key='new' color="inherit">New Post</Button>
           {categories && categories.length > 0 && categories.map((category) => 
             <Button onClick={(e) => this.onClick(e,category)} key={category.name} color="inherit">{category.name}</Button>

@@ -12,9 +12,9 @@ const ListComments = ({onClickOpenDialog, commentsByPost}) => {
                 <Button onClick={onClickOpenDialog} id='new-comment' size="small">New Comment</Button>
             </div>
             {commentsByPost && commentsByPost.length > 0 && (
-                commentsByPost.map((comment, index) =>
+                commentsByPost.sort((c1, c2) =>  c2.timestamp - c1.timestamp).map((comment, index) =>
                     comment ?
-                        <Comment index={index} onClickEditComment={onClickOpenDialog} key={comment.id} comment={comment} /> 
+                        <Comment index={index} onClickEditComment={(e) => onClickOpenDialog(e, comment.id)} key={comment.id} comment={comment} /> 
                         : null
                 )
             )}

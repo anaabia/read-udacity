@@ -69,7 +69,7 @@ class NewForm extends Component {
     }
 
     actionToRedirect = (category, id) => 
-    this.props.history.push(`/category/${category}/${id}`)
+    this.props.history.push(`/${category}/${id}`)
     
     render () {
         const { isComment } = this.props
@@ -142,6 +142,7 @@ const mapStateToProps = ({ categories, posts, comment: {comments}}, ownProps) =>
         categories,
         posts,
         comments,
+        commentId: ownProps.commentId
     }
 }
 

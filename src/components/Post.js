@@ -54,10 +54,10 @@ class Post extends Component {
 
     componentDidMount() {
         const isExistComment = this.props.post && this.props.comment ?
-            this.props.comment.comments.find(c => c.parentId === this.props.post.id)
-            : this.props.comment.comments.find(c => c.parentId === this.props.match.params.id)
+            this.props.comment.comments.find(c => c.parentId === this.props.post.post_id)
+            : this.props.comment.comments.find(c => c.parentId === this.props.match.params.post_id)
         if (!isExistComment) {
-            this.props.dispatch(handleCommentsByPost(this.props.post ? this.props.post.id : this.props.match.params.id))
+            this.props.dispatch(handleCommentsByPost(this.props.post ? this.props.post.id : this.props.match.params.post_id))
         }
     }
 
@@ -74,21 +74,6 @@ class Post extends Component {
         this.props.dispatch(openDialogComment())
     }
 
-    onClickCloseDialog = () => {
-        this.props.dispatch(closeDialogComment())
-    }
-
-    onClickDeletePost = (e) => {
-        e.preventDefault()
-        this.props.dispatch(handleDeletePost(this.props.post.id))
-        this.props.history.push(`/category/${this.props.post.category}`)
-    }
-
-    onClickEditPost = (e) => {
-        e.preventDefault()
-        this.props.history.push(`/newPost/${this.props.post.id}`)
-    }
-
     onClickEditComment = (e, commentId) => {
         e.preventDefault()
         this.setState({
@@ -97,18 +82,33 @@ class Post extends Component {
         this.props.dispatch(openDialogComment())
     }
 
+    onClickCloseDialog = () => {
+        this.props.dispatch(closeDialogComment())
+    }
+
+    onClickDeletePost = (e) => {
+        e.preventDefault()
+        this.props.dispatch(handleDeletePost(this.props.post.id))
+        this.props.history.push(`/${this.props.post.category}`)
+    }
+
+    onClickEditPost = (e) => {
+        e.preventDefault()
+        this.props.history.push(`/newPost/${this.props.post.id}`)
+    }
+    
     render() {
         const { post, comment: { comments }, classes } = this.props;
         const date = post && formatDate(post.timestamp)
-        const isShowComments = Boolean(this.props.match.params.id)
+        const isShowComments = Boolean(this.props.match.params.post_id)
         const commentsByPost = comments && post && comments.filter(comment => comment.parentId === post.id)
         return (
             <div>
                 {post ?
                     <Card  className={classes.card}>
-                        <Link to={`/category/${post.category}/${post.id}`}>
+                        <Link to={`/${post.category}/${post.id}`}>
                             <CardContent>
-                                <Typography variant="h5" component="h2" className={classes.postIcons}>
+                                <Typography variant="h5" component="h1" className={classes.postIcons}>
                                     <h2 id='post-title'>{post.title}</h2>
                                     <button className='icon-button'>
                                         <FontAwesome.FaComment className='post-icon' />
@@ -132,7 +132,7 @@ class Post extends Component {
                                     {post.body}
                                 </Typography>
                                     {isShowComments &&
-                                        <ListComments onClickOpenDialog={this.onClickOpenDialog} commentsByPost={commentsByPost} />
+                                        <ListComments onClickOpenDialog={this.onClickEditComment} commentsByPost={commentsByPost} />
                                     }
                             </CardContent>
                         </Link>
@@ -151,7 +151,7 @@ const mapStatesToProps = ({ posts, comment }, ownProps) => {
     return {
         posts,
         comment,
-        post: ownProps.match.params.id ? posts[ownProps.match.params.id] : ownProps.post
+        post: ownProps.match.params.post_id ? posts[ownProps.match.params.post_id] : ownProps.post
     }
 }
 export default withRouter(connect(mapStatesToProps)(withStyles(styles)(Post)));

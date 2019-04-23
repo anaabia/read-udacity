@@ -13,7 +13,7 @@ import { handleAllPosts } from './actions/post';
 class App extends Component {
 
   componentDidMount(){
-    this.props.dispatch(handleAllPosts())
+    this.props.loadAllPosts()
   }
 
   render() {
@@ -24,8 +24,8 @@ class App extends Component {
           <div className="App">
             <Nav />
             <Route path='/' exact component={PageView} />
-            <Route path='/category/:category' exact component={PageView} />
-            <Route path='/category/:category/:id' exact component={Post}/>
+            <Route path='/:category' exact component={PageView} />
+            <Route path='/:category/:post_id' exact component={Post}/>
             <Route path='/newPost' exact component={NewForm}/>
             <Route path='/newPost/:id' exact component={NewForm}/>
           </div>
@@ -35,4 +35,11 @@ class App extends Component {
   }
 }
 
-export default connect(null)(App)
+const mapDispatchToProps = (dispatch) => {
+  return {
+      loadAllPosts:  () => {
+        dispatch(handleAllPosts())
+      }
+  }
+}
+export default connect(null,mapDispatchToProps)(App)

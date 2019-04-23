@@ -34,7 +34,7 @@ const comment = (states = {comments: [], isShowDialog: false }, action) => {
         case DELETE_COMMENT:
             return {
                 ...states,
-                comments: [...states.comments.filter(comment => comment.id !== action.commentId)]
+                comments: [states.comments.filter(comment => comment.id !== action.commentId)]
             }
         case VOTE_COMMENT:
             return {
